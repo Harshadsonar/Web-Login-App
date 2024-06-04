@@ -3,21 +3,11 @@ import img from "../675f868a84d281d4c39ec5e7c770bbd9.png";
 import { Link } from "react-router-dom";
 import GoogleIcon from "../images/LogosGoogleIcon.svg";
 import AppleIcon from "../images/LogosApple.svg";
-import { useState } from "react";
 import MdiEye from "../images/MdiEye.svg";
 import MdiEyeOff from "../images/MdiEyeOff.svg";
 
-function Signup() {
-  const [passwordData, setPasswordData] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-
-  const handleInput = (e) => {
-    setPasswordData(e.target.value);
-  };
-
-  const handleShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
+function Signup({ handleInput, passwordData, handleShowPassword, showPassword}) {
+  
   return (
     <div className="Signup" id="sign-up">
       <div className="signup-logo">

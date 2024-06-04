@@ -170,8 +170,16 @@
     position: absolute;
     transform: translateY(-50%);
     cursor: pointer;
-    top: 95%;
-    right: 15%;
+    top: 95.5%;
+    right: 14.5%;
+}
+
+.password-input .toggle-password-signin {
+    position: absolute;
+    transform: translateY(-50%);
+    cursor: pointer;
+    top: 86.5%;
+    left: 38.5%;
 }
 
 
@@ -204,6 +212,14 @@
 .policy-text a {
     text-decoration: none;
     color: #333;
+}
+
+.checkbox {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-bottom: 10px;
+    gap: 10px;
 }
 
 

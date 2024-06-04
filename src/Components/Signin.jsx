@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import img from "../fb2.png";
 import { Link } from "react-router-dom";
 import GoogleIcon from "../images/LogosGoogleIcon.svg";
@@ -43,16 +42,18 @@ const Signin = ({ handleInput, passwordData, handleShowPassword, showPassword}) 
             src={showPassword ? MdiEye : MdiEyeOff}
             alt="show password"
             onClick={handleShowPassword}
-            className="toggle-password"
+            className="toggle-password-signin"
           />
         </div>
-        <div>
+        <div className="checkbox">
+          <br />
         <label>
           <input type="checkbox" />
           Remember me
         </label>
         <a href="" className="forgotPassword-btn">Forgot Password?</a>
         </div>
+        <br />
         <button className="signin-btn">Sign In</button>
         <p>
           Don't have an account? <Link to="/sign-up" className="sign-up-btn">Sign Up</Link>
