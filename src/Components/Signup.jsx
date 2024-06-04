@@ -57,8 +57,8 @@ function Signup({ handleInput, passwordData, handleShowPassword, showPassword}) 
         <div className="policy-text">
           <p>
             By creating an account, you agreeing to our{" "}
-            <a href="$">Privacy Policy</a>, and
-            <a href="$"> Electronics Communication Policy</a>.
+            <a href="/">Privacy Policy</a>, and
+            <a href="/"> Electronics Communication Policy</a>.
           </p>
         </div>
         <button className="signup-btn">Sign Up</button>
@@ -69,8 +69,8 @@ function Signup({ handleInput, passwordData, handleShowPassword, showPassword}) 
           </Link>
         </p>
         <div className="bottom-links">
-          <a href="">Privacy Policy</a>
-          <a href="">Copyright 2022</a>
+          <a href="/">Privacy Policy</a>
+          <a href="/">Copyright 2022</a>
         </div>
       </div>
     </div>

@@ -218,8 +218,10 @@
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+    margin-top: 10px;
     margin-bottom: 10px;
-    gap: 10px;
+    gap: 120px;
+    width: 80%;
 }
 
 

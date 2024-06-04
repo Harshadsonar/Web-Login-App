@@ -51,7 +51,7 @@ const Signin = ({ handleInput, passwordData, handleShowPassword, showPassword}) 
           <input type="checkbox" />
           Remember me
         </label>
-        <a href="" className="forgotPassword-btn">Forgot Password?</a>
+        <a href="/" className="forgotPassword-btn">Forgot Password?</a>
         </div>
         <br />
         <button className="signin-btn">Sign In</button>
@@ -59,8 +59,8 @@ const Signin = ({ handleInput, passwordData, handleShowPassword, showPassword}) 
           Don't have an account? <Link to="/sign-up" className="sign-up-btn">Sign Up</Link>
         </p>
         <div className="bottom-links">
-          <a href="">Privacy Policy</a>
-          <a href="">Copyright 2022</a>
+          <a href="/">Privacy Policy</a>
+          <a href="/">Copyright 2022</a>
         </div>
       </div>
       <div className="signin-logo">
