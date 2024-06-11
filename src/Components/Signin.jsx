@@ -1,24 +1,101 @@
-import img from "../fb2.png";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import GoogleIcon from "../images/LogosGoogleIcon.svg";
 import AppleIcon from "../images/LogosApple.svg";
 import MdiEye from "../images/MdiEye.svg";
 import MdiEyeOff from "../images/MdiEyeOff.svg";
+import img from "../fb2.png";
+import { auth, db } from "./firebase";
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, sendPasswordResetEmail, setPersistence, browserSessionPersistence, browserLocalPersistence } from "firebase/auth";
+import { toast } from "react-toastify";
+import { setDoc, doc } from "firebase/firestore";
 
-const Signin = ({ handleInput, passwordData, handleShowPassword, showPassword}) => {
+
+
+const Signin = ({ handleInput, passwordData, handleShowPassword, showPassword }) => {
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence );
+      await signInWithEmailAndPassword(auth, email, password);
+      console.log("User logged in Successfully !");
+      window.location.href = "/profile-page";
+      toast.success("User logged in Successfully!", {
+        position: "top-right",
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message, {
+        position: "top-right",
+      });
+    }
+  };
+
+  const googleLogin = async () => {
+    try {
+      await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence );
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      if (user) {
+        await setDoc(doc(db, "users", user.uid), {
+          email: user.email,
+          firstName: user.displayName,
+          photo: user.photoURL,
+          lastName: user.displayName,
+        });
+        toast.success("User logged in Successfully!", {
+          position: "top-center",
+        });
+        window.location.href = "/profile-page";
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message, {
+        position: "top-right",
+      });
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    if(!email){
+      toast.error("Please enter your email address first", {
+        position: "top-right",
+      });
+      return;
+    }
+    try{
+      await sendPasswordResetEmail(auth, email);
+      toast.success("Password reset email sent successfully", {
+        position: "top-right",
+      });
+
+    } catch(error){
+      console.log(error);
+      toast.error(error.message, {
+        position: "top-right",
+      })
+    }
+  }
+
   return (
-    <div className="signin" id="sign-in">
+    <form className="signin" id="sign-in" onSubmit={handleSubmit}>
       <div className="signin-page">
         <h1>Sign in to Overpay</h1>
         <p className="text">Send, spend and save smarter</p>
         <div className="signin-buttons">
-          <button>
+          <button type="button" onClick={googleLogin}>
             <img src={GoogleIcon} alt="GoogleIcon" />
-            <p>Sign Up with Google</p>
+            <p>Sign In with Google</p>
           </button>
-          <button>
+          <button type="button">
             <img src={AppleIcon} alt="AppleIcon" />
-            <p>Sign Up with Apple</p>
+            <p>Sign In with Apple</p>
           </button>
         </div>
         <div className="separator">
@@ -27,15 +104,15 @@ const Signin = ({ handleInput, passwordData, handleShowPassword, showPassword}) 
           <div className="line"></div>
         </div>
         <div className="input-email">
-        <input type="email" placeholder="Email" /> 
+          <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
         <br />
         <div className="password-input">
-        <input
+          <input
             type={showPassword ? "text" : "password"}
             placeholder="Password"
-            value={passwordData}
-            onChange={handleInput}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             autoComplete="off"
           />
           <img
@@ -47,14 +124,14 @@ const Signin = ({ handleInput, passwordData, handleShowPassword, showPassword}) 
         </div>
         <div className="checkbox">
           <br />
-        <label>
-          <input type="checkbox" />
-          Remember me
-        </label>
-        <a href="/" className="forgotPassword-btn">Forgot Password?</a>
+          <label>
+            <input type="checkbox" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
+            Remember me
+          </label>
+          <a href="/" className="forgotPassword-btn" onClick={handleForgotPassword}>Forgot Password?</a>
         </div>
         <br />
-        <button className="signin-btn">Sign In</button>
+        <button className="signin-btn" type="submit">Sign In</button>
         <p>
           Don't have an account? <Link to="/sign-up" className="sign-up-btn">Sign Up</Link>
         </p>
@@ -66,7 +143,7 @@ const Signin = ({ handleInput, passwordData, handleShowPassword, showPassword}) 
       <div className="signin-logo">
         <img src={img} alt="page" />
       </div>
-    </div>
+    </form>
   );
 };
 

@@ -1,15 +1,57 @@
-import React from "react";
+import React, { useState } from "react";
 import img from "../675f868a84d281d4c39ec5e7c770bbd9.png";
 import { Link } from "react-router-dom";
 import GoogleIcon from "../images/LogosGoogleIcon.svg";
 import AppleIcon from "../images/LogosApple.svg";
 import MdiEye from "../images/MdiEye.svg";
 import MdiEyeOff from "../images/MdiEyeOff.svg";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "./firebase";
+import { setDoc, doc } from "firebase/firestore";
+import { toast } from "react-toastify";
 
-function Signup({ handleInput, passwordData, handleShowPassword, showPassword}) {
-  
+function Signup({
+  handleInput,
+  passwordData,
+  handleShowPassword,
+  showPassword,
+}){
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [fname, setFname] = useState("");
+  const [lname, setLname] = useState("");
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    console.log("Register");
+    try{
+      createUserWithEmailAndPassword(auth, email, password);
+      const user = auth.currentUser;
+      console.log(user);
+      if(user){
+        await setDoc(doc(db, "users", user.uid), {
+          email: user.email,
+          firstName: fname,
+          lastName: lname,
+        })
+      }
+      console.log("User Registered Successfully !");
+      toast.success("User Registered Successfully !", {
+        position: "top-right",
+      });
+      window.location.href = "/";
+    } catch (error){
+      console.log(error.message);
+      toast.success(error.message, {
+        position: "top-right",
+      });
+    }
+  }
+
+
   return (
-    <div className="Signup" id="sign-up">
+    <form className="Signup" id="sign-up" onSubmit={handleRegister}>
       <div className="signup-logo">
         <img src={img} alt="page" />
       </div>
@@ -32,20 +74,21 @@ function Signup({ handleInput, passwordData, handleShowPassword, showPassword}) 
           <div className="line"></div>
         </div>
         <div className="input-name">
-          <input type="text" placeholder="First Name" />
-          <input type="text" placeholder="Last Name" />
+          <input type="text" placeholder="First Name" required onChange={(e) => setFname(e.target.value) }/>
+          <input type="text" placeholder="Last Name" required onChange={(e) => setLname(e.target.value)} />
         </div>
         <div className="input-email">
-          <input type="email" placeholder="Email" />
+          <input type="email" placeholder="Email" required onChange={(e) => setEmail(e.target.value)} />
         </div>
         <br />
         <div className="password-input">
           <input
             type={showPassword ? "text" : "password"}
             placeholder="Password"
-            value={passwordData}
-            onChange={handleInput}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             autoComplete="off"
+            required
           />
           <img
             src={showPassword ? MdiEye : MdiEyeOff}
@@ -61,7 +104,7 @@ function Signup({ handleInput, passwordData, handleShowPassword, showPassword}) 
             <a href="/"> Electronics Communication Policy</a>.
           </p>
         </div>
-        <button className="signup-btn">Sign Up</button>
+        <button className="signup-btn" type="submit">Sign Up</button>
         <p>
           Already have an account?{" "}
           <Link to="/" className="sign-in-btn">
@@ -73,7 +116,7 @@ function Signup({ handleInput, passwordData, handleShowPassword, showPassword}) 
           <a href="/">Copyright 2022</a>
         </div>
       </div>
-    </div>
+    </form>
   );
 }
 
