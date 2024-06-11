@@ -26,12 +26,12 @@ const Signin = ({ handleInput, passwordData, handleShowPassword, showPassword })
       console.log("User logged in Successfully !");
       window.location.href = "/profile-page";
       toast.success("User logged in Successfully!", {
-        position: "top-right",
+        position: "top-center",
       });
     } catch (error) {
       console.log(error);
       toast.error(error.message, {
-        position: "top-right",
+        position: "top-center",
       });
     }
   };
@@ -57,31 +57,11 @@ const Signin = ({ handleInput, passwordData, handleShowPassword, showPassword })
     } catch (error) {
       console.log(error);
       toast.error(error.message, {
-        position: "top-right",
+        position: "top-center",
       });
     }
   };
 
-  const handleForgotPassword = async () => {
-    if(!email){
-      toast.error("Please enter your email address first", {
-        position: "top-right",
-      });
-      return;
-    }
-    try{
-      await sendPasswordResetEmail(auth, email);
-      toast.success("Password reset email sent successfully", {
-        position: "top-right",
-      });
-
-    } catch(error){
-      console.log(error);
-      toast.error(error.message, {
-        position: "top-right",
-      })
-    }
-  }
 
   return (
     <form className="signin" id="sign-in" onSubmit={handleSubmit}>
@@ -128,7 +108,7 @@ const Signin = ({ handleInput, passwordData, handleShowPassword, showPassword })
             <input type="checkbox" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
             Remember me
           </label>
-          <a href="/" className="forgotPassword-btn" onClick={handleForgotPassword}>Forgot Password?</a>
+            <Link to="/reset-password-page" className="forgot-password-btn">Forgot Password?</Link>
         </div>
         <br />
         <button className="signin-btn" type="submit">Sign In</button>

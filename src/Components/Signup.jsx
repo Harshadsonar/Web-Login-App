@@ -38,13 +38,13 @@ function Signup({
       }
       console.log("User Registered Successfully !");
       toast.success("User Registered Successfully !", {
-        position: "top-right",
+        position: "top-center",
       });
       window.location.href = "/";
     } catch (error){
       console.log(error.message);
       toast.success(error.message, {
-        position: "top-right",
+        position: "top-center",
       });
     }
   }
