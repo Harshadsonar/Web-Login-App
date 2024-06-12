@@ -1,9 +1,9 @@
 import React from 'react';
-import FacebookIcon from '../../images/facebook.svg';
-import bannerImg from '../../images/banner.svg';
-import twitterIcon from '../../images/twitter.svg';
-import GooglePlus from '../../images/google-plus.svg';
-import Linkedin from '../../images/linkedin.svg';
+import FacebookIcon from '../../images/LogosFacebook.svg';
+import bannerImg from '../../images/dolphy appsta.png';
+import twitterIcon from '../../images/WhhCircletwitter.svg';
+import GooglePlus from '../../images/LogosGoogleIcon.svg';
+import Linkedin from '../../images/EntypoSocialLinkedinWithCircle.svg';
 
 const SignupwithSocial = () => {
   return (
