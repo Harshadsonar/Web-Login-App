@@ -1,9 +1,9 @@
 import React from 'react';
-import FacebookIcon from '/React/web-login-ui/src/images/LogosFacebook.svg';
-import twitterIcon from '/React/web-login-ui/src/images/WhhCircletwitter.svg';
-import GooglePlus from '/React/web-login-ui/src/images/MdiGooglePlus.svg';
-import Linkedin from '/React/web-login-ui/src/images/EntypoSocialLinkedinWithCircle.svg';
-import bannerImg from '/React/web-login-ui/src/images/dolphy appsta.png';
+import FacebookIcon from '../../images/facebook.svg';
+import bannerImg from '../../images/banner.svg';
+import twitterIcon from '../../images/twitter.svg';
+import GooglePlus from '../../images/google-plus.svg';
+import Linkedin from '../../images/linkedin.svg';
 
 const SignupwithSocial = () => {
   return (
