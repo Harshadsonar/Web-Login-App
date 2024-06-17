@@ -276,6 +276,56 @@
     font-size: 14px;
 }
 
+@media (min-width: 320px) and (max-width: 480px) {
+    .signup-buttons button,
+    .signin-buttons button {
+        width: 100%;
+        /* Full width on small devices */
+    }
+    .signup-page,
+    .signin-page {
+        padding-top: 50px;
+        /* Adjust padding for small devices */
+    }
+    .separator {
+        padding: 0 5%;
+        /* Adjust padding for small devices */
+    }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+    .signup-buttons button,
+    .signin-buttons button {
+        width: 80%;
+        /* 80% width on tablets */
+    }
+    .signup-page,
+    .signin-page {
+        padding-top: 75px;
+        /* Adjust padding for tablets */
+    }
+    .separator {
+        padding: 0 10%;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .signup-buttons button,
+    .signin-buttons button {
+        width: 70%;
+        /* 70% width on small laptops */
+    }
+    .signup-page,
+    .signin-page {
+        padding-top: 100px;
+        /* Adjust padding for small laptops */
+    }
+    .separator {
+        padding: 0 15%;
+        /* Adjust padding for small laptops */
+    }
+}
+
 
 /* Mobile UI CSS  */
 

@@ -4,9 +4,6 @@ import Signin from './Components/Signin';
 import { useEffect, useState } from "react";
 import {  BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import ProfilePage from './Components/ProfilePage';
-import SignupwithSocial from './Components/mobileUI/SignupwithSocial';
-import SignupMobile from './Components/mobileUI/SignupMobile';
-import SigninMobile from './Components/mobileUI/SigninMobile';
 import { ToastContainer } from 'react-toastify';
 import { auth } from './Components/firebase';
 import ResetPassword from './Components/ResetPassword';
@@ -49,9 +46,6 @@ function App() {
         />} />
         <Route path='/profile-page' element={<ProfilePage/>}/>
         <Route path='/reset-password-page' element={<ResetPassword/>}/>
-        <Route path='/signup-with-social' element={<SignupwithSocial/>}/>
-        { <Route path='/signup-mobile' element={<SignupMobile/>}/> }
-        { <Route path='/signin-mobile' element={<SigninMobile/>}/> }
         </Routes>
       <ToastContainer />
       </BrowserRouter>

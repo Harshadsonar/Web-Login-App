@@ -37,7 +37,6 @@ const ProfilePage = () => {
       }
     });
 
-    // Cleanup subscription on unmount
     return () => unsubscribe();
   }, []);
 
@@ -45,9 +44,9 @@ const ProfilePage = () => {
     try {
       await auth.signOut();
       window.location.href = "/";
-      toast.success("Logged out successfully!");
+      // toast.success("Logged out successfully!");
     } catch (error) {
-      toast.error("Error logging out: " + error.message);
+      // toast.error("Error logging out: " + error.message);
     }
   };
 

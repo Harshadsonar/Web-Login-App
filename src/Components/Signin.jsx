@@ -6,24 +6,22 @@ import MdiEye from "../images/MdiEye.svg";
 import MdiEyeOff from "../images/MdiEyeOff.svg";
 import img from "../fb2.png";
 import { auth, db } from "./firebase";
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, sendPasswordResetEmail, setPersistence, browserSessionPersistence, browserLocalPersistence } from "firebase/auth";
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, setPersistence, browserSessionPersistence, browserLocalPersistence } from "firebase/auth";
 import { toast } from "react-toastify";
 import { setDoc, doc } from "firebase/firestore";
 
-
-
 const Signin = ({ handleInput, passwordData, handleShowPassword, showPassword }) => {
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence );
+      await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
       await signInWithEmailAndPassword(auth, email, password);
-      console.log("User logged in Successfully !");
+      console.log("User logged in Successfully!");
       window.location.href = "/profile-page";
       toast.success("User logged in Successfully!", {
         position: "top-center",
@@ -36,18 +34,23 @@ const Signin = ({ handleInput, passwordData, handleShowPassword, showPassword })
     }
   };
 
+ 
   const googleLogin = async () => {
     try {
-      await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence );
+      await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
       const provider = new GoogleAuthProvider();
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
+
       if (user) {
+        const [firstName, ...lastNameArr] = user.displayName.split(" ");
+        const lastName = lastNameArr.join(" ");
+
         await setDoc(doc(db, "users", user.uid), {
           email: user.email,
-          firstName: user.displayName,
+          firstName,
           photo: user.photoURL,
-          lastName: user.displayName,
+          lastName,
         });
         toast.success("User logged in Successfully!", {
           position: "top-center",
@@ -61,7 +64,6 @@ const Signin = ({ handleInput, passwordData, handleShowPassword, showPassword })
       });
     }
   };
-
 
   return (
     <form className="signin" id="sign-in" onSubmit={handleSubmit}>
@@ -108,7 +110,7 @@ const Signin = ({ handleInput, passwordData, handleShowPassword, showPassword })
             <input type="checkbox" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
             Remember me
           </label>
-            <Link to="/reset-password-page" className="forgot-password-btn">Forgot Password?</Link>
+          <Link to="/reset-password-page" className="forgot-password-btn">Forgot Password?</Link>
         </div>
         <br />
         <button className="signin-btn" type="submit">Sign In</button>
