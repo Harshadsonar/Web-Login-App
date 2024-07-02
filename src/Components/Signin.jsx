@@ -1,20 +1,29 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import GoogleIcon from "../images/LogosGoogleIcon.svg";
-import AppleIcon from "../images/LogosApple.svg";
+import FacebookIcon from "../images/LogosFacebook.svg";
 import MdiEye from "../images/MdiEye.svg";
 import MdiEyeOff from "../images/MdiEyeOff.svg";
 import img from "../fb2.png";
-import { auth, db } from "./firebase";
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, setPersistence, browserSessionPersistence, browserLocalPersistence } from "firebase/auth";
-import { toast } from "react-toastify";
+import { auth, db, fbAuthProvider } from "./firebase";
+import {
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  setPersistence,
+  browserSessionPersistence,
+  browserLocalPersistence,
+  fetchSignInMethodsForEmail,
+  EmailAuthProvider,
+  linkWithCredential,
+  FacebookAuthProvider
+} from "firebase/auth";
 import { setDoc, doc } from "firebase/firestore";
 
 const Signin = ({ handleInput, passwordData, handleShowPassword, showPassword }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,18 +32,11 @@ const Signin = ({ handleInput, passwordData, handleShowPassword, showPassword })
       await signInWithEmailAndPassword(auth, email, password);
       console.log("User logged in Successfully!");
       window.location.href = "/profile-page";
-      toast.success("User logged in Successfully!", {
-        position: "top-center",
-      });
     } catch (error) {
       console.log(error);
-      toast.error(error.message, {
-        position: "top-center",
-      });
     }
   };
 
- 
   const googleLogin = async () => {
     try {
       await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
@@ -52,16 +54,76 @@ const Signin = ({ handleInput, passwordData, handleShowPassword, showPassword })
           photo: user.photoURL,
           lastName,
         });
-        toast.success("User logged in Successfully!", {
-          position: "top-center",
-        });
+
         window.location.href = "/profile-page";
       }
     } catch (error) {
       console.log(error);
-      toast.error(error.message, {
-        position: "top-center",
-      });
+    }
+  };
+
+  const FacebookAuth = async () => {
+    try {
+      const fbAuth = await signInWithPopup(auth, fbAuthProvider);
+      const user = fbAuth.user;
+
+      if (user) {
+        const [firstName, ...lastNameArr] = user.displayName.split(" ");
+        const lastName = lastNameArr.join(" ");
+
+        await setDoc(doc(db, "users", user.uid), {
+          email: user.email,
+          firstName,
+          photo: user.photoURL,
+          lastName,
+        });
+
+        return fbAuth;
+      } else {
+        throw new Error("User is undefined");
+      }
+    } catch (error) {
+      if (error.code === 'auth/account-exists-with-different-credential') {
+        const pendingCred = FacebookAuthProvider.credentialFromError(error);
+        const email = error.customData.email;
+
+        const signInMethods = await fetchSignInMethodsForEmail(auth, email);
+
+        if (signInMethods.includes(EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD)) {
+          const password = prompt("Please provide your password for " + email);
+          const credential = EmailAuthProvider.credential(email, password);
+          const userCredential = await signInWithEmailAndPassword(auth, email, password);
+
+          await linkWithCredential(userCredential.user, pendingCred);
+          return userCredential;
+        } else if (signInMethods.includes(GoogleAuthProvider.PROVIDER_ID)) {
+          const googleProvider = new GoogleAuthProvider();
+          const userCredential = await signInWithPopup(auth, googleProvider);
+
+          await linkWithCredential(userCredential.user, pendingCred);
+          return userCredential;
+        } else {
+          throw error;
+        }
+      } else {
+        throw error;
+      }
+    }
+  };
+
+  const FacebookAuthButtonClicked = async () => {
+    try {
+      await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
+      const result = await FacebookAuth();
+      const user = result.user;
+
+      if (user) {
+        window.location.href = "/profile-page";
+      } else {
+        console.log("User is undefined after FacebookAuth");
+      }
+    } catch (error) {
+      console.log("Facebook login failed", error);
     }
   };
 
@@ -75,9 +137,9 @@ const Signin = ({ handleInput, passwordData, handleShowPassword, showPassword })
             <img src={GoogleIcon} alt="GoogleIcon" />
             <p>Sign In with Google</p>
           </button>
-          <button type="button">
-            <img src={AppleIcon} alt="AppleIcon" />
-            <p>Sign In with Apple</p>
+          <button type="button" onClick={FacebookAuthButtonClicked}>
+            <img src={FacebookIcon} alt="FacebookIcon" />
+            <p>Sign In with Facebook</p>
           </button>
         </div>
         <div className="separator">

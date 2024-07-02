@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 //getAuth it helps register our user to the firebase console/firebase project and it will give us the user authentication
 
@@ -17,6 +17,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
-export { auth, provider };
+const fbAuthProvider = new FacebookAuthProvider();
+
+
+export { auth, provider, fbAuthProvider };
 export const db = getFirestore(app);
 export default app;

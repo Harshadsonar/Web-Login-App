@@ -1,7 +1,6 @@
 import { sendPasswordResetEmail } from 'firebase/auth';
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router';
-import { toast } from 'react-toastify';
 import { auth } from './firebase';
 
 const ResetPassword = () => {
@@ -12,15 +11,9 @@ const ResetPassword = () => {
         e.preventDefault();
         try{
             await sendPasswordResetEmail(auth, email);
-            toast.success("Password reset email sent!", {
-                position: "top-center",
-            });
             navigate('/sign-in')
         } catch(error){
             console.log(error);
-            toast.error(error.message, {
-                position: "top-center",
-            });
         }
     };
 

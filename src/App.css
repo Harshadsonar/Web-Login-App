@@ -167,19 +167,19 @@
 }
 
 .toggle-password {
-    position: absolute;
+    position:absolute;
     transform: translateY(-50%);
     cursor: pointer;
-    top: 95.5%;
-    right: 14.5%;
+    top: 100%;
+    right: 15%;
 }
 
 .password-input .toggle-password-signin {
     position: absolute;
     transform: translateY(-50%);
     cursor: pointer;
-    top: 86.5%;
-    left: 38.5%;
+    top: 90.5%;
+    left: 37.5%;
 }
 
 
